@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<section class="contact_section layout_padding">
+    <div class="contact_bg_box">
+        <div class="img-box">
+            <img src="images/contact-bg.jpg" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>
+                Get In touch
+            </h2>
+        </div>
+        <div class="">
+            <div class="row">
+                <div class="col-md-7 mx-auto">
+                    <form action="/Home/ContactUs" method="post">
+                        <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
+                        <div class="contact_form-container">
+                            <div>
+                                <div>
+                                    <input type="text" placeholder="First Name" name="FirstName" required>
+                                </div>
+                                <div>
+                                    <input type="text" placeholder="Last Name" name="LastName">
+                                </div>
+                                @*  <div class="btn-box">
+                                Male
+                                <input id="Gender" name="Gender" value="Male" type="radio" style="height:20px;margin:revert;" required>
+                                Female
+                                <input id="Gender" name="Gender" value="Female" type="radio" style="height:20px;margin:revert;" required>
+                                </div> *@
+                                <div>
+                                    <input type="email" placeholder="Email" name="EmailId" required>
+                                </div>
+                                <div>
+                                    <input type="number" placeholder="Phone Number" name="PhoneNumber" maxlength="10" required>
+                                </div>
+
+                                <div class="">
+                                    <input type="text" placeholder="Message" class="message_input" name="Message">
+                                </div>
+                                <div class="btn-box ">
+                                    <button type="submit">
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        if ($("#hdnTempData").val() != null && $("#hdnTempData").val() != '') {
+            toastr.success("Contacts Added", "Successfully Added");
+        }
+    });
+</script>

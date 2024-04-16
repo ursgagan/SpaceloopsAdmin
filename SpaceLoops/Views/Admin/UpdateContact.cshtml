@@ -1,0 +1,78 @@
+﻿@{
+    Layout = "_layoutAdmin";
+}
+
+@model SpaceLoops.DAL.Entity.Contact
+
+<section class="section">
+    <h1 class="section-header">
+        <div>Update Contact</div>
+    </h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+
+                <div class="card card-primary">
+                    <div class="card-header"><h4>Update Contact</h4></div>
+
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="row">
+
+                                <input id="Id" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus>
+
+                                <div class="form-group col-6">
+                                    <label for="FirstName">First Name</label>
+                                    <input id="FirstName" type="text" class="form-control" name="FirstName" value="@Model.FirstName" autofocus>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="LastName">Last Name</label>
+                                    <input id="LastName" type="text" class="form-control" name="LastName" value="@Model.LastName">
+                                </div>
+                            </div>
+
+                           @*  <div class="btn-box">
+                                Male
+                                <input id="Gender" name="Gender" type="radio" style="height:20px;margin:revert;" value="Male" @(Model.Gender == "Male" ? "checked" : "") required>
+                                Female
+                                <input id="Gender" name="Gender" type="radio" style="height:20px;margin:revert;" value="Female" @(Model.Gender == "Female" ? "checked" : "") required>
+                            </div>
+ *@
+                            <div class="form-group">
+                                <label for="EmailId">EmailId</label>
+                                <input id="EmailId" type="EmailId" class="form-control" name="EmailId" value="@Model.EmailId">
+                                <div class="invalid-feedback">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="PhoneNumber">Phone Number</label>
+                                <input id="PhoneNumber" type="text" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber">
+                                <div class="invalid-feedback">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="Message">Message</label>
+                                <input id="Message" type="text" class="form-control" name="Message" value="@Model.Message">
+                                <div class="invalid-feedback">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <button type="submit" class="btn btn-primary btn-block" style="width: fit-content;" onclick="redirectToContactListPage">
+                                            Edit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                  
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

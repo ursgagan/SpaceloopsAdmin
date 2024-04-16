@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Information</title>
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background: #e0e0e0; /* Light gray background */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        }
+
+        h1 {
+            color: #333; /* Set heading text color to dark gray */
+            text-align: center; /* Center align heading */
+            margin-bottom: 20px; /* Add bottom margin for spacing */
+        }
+
+        .form-field {
+            background-color: #fff; /* White background for form fields */
+            padding: 10px;
+            margin-bottom: 15px; /* Add bottom margin for spacing */
+            border-radius: 5px; /* Add border-radius for rounded corners */
+        }
+
+            .form-field label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px; /* Add bottom margin for spacing */
+            }
+
+        .message {
+            background-color: #fff; /* White background for message field */
+            padding: 10px;
+            margin-bottom: 15px; /* Add bottom margin for spacing */
+            border-radius: 5px; /* Add border-radius for rounded corners */
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff; /* Dark blue background color */
+            color: #fff; /* Set button text color to white */
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease; /* Add transition for smooth hover effect */
+        }
+
+            .cta-button:hover {
+                background-color: #0056b3; /* Darken button color on hover */
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Information </h1>
+        <div class="form-field">
+            <span class="data-label">Name:</span> <span>[UserName]</span>
+        </div>
+        <div class="form-field">
+            <span class="data-label">Email Address: </span> <a href="[UserEmail]">[UserEmail]</a>
+        </div>
+        <div class="form-field">
+            <span class="data-label">Phone Number: </span> <a href="[PhoneNumber]"> [PhoneNumber]</a>
+        </div>
+        <div class="message">
+            <span class="data-label">Message: [Message]</span>
+        </div>
+
+    </div>
+</body>
+</html>

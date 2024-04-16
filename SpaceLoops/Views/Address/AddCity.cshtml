@@ -1,0 +1,186 @@
+﻿@{
+    Layout = "_layoutAdmin";
+}
+
+@model SpaceLoops.DAL.Entities.City
+
+<section class="section">
+    <h1 class="section-header">
+                <div>
+            @if (Model.Id != null && Model.Id != Guid.Empty)
+        {
+        <span>Edit City</span>
+        }
+        else
+        {
+        <span>Add City</span>
+        }
+        </div>
+    </h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h4>
+                             <div>
+                            @if (Model.Id != null && Model.Id != Guid.Empty)
+                            {
+                            <span>Edit City</span>
+                            }
+                            else
+                            {
+                            <span>Add City</span>
+                            }
+                            </div>
+                        </h4>
+                    </div>
+
+                    <div class="card-body">
+
+                        <form action="/Address/AddCity" method="POST">
+                            <input id="Id" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus>
+                            <input id="hdncountryId" class="form-control" name="hdncountryId" value="@ViewBag.CountryId" type="hidden">
+                            <input id="hdnStateId" class="form-control" name="hdnStateId" value="@Model.StateId" type="hidden">
+                            <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
+                            <input type="hidden" id="hiddenTempData" value="@TempData["UpdateMessage"]" />
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label>Country</label>
+                                    <select class="form-control" name="CountryId" id="CountryId">
+                                        <option>Select Country</option>
+                                        @foreach (var country in ViewBag.CountryList)
+                                        {
+                                            if (ViewBag.CountryId != null && ViewBag.CountryId == country.Id)
+                                            {
+                                                <option value="@country.Id" selected="selected">@country.CountryName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@country.Id">@country.CountryName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label>State</label>
+                                    <select class="form-control" name="StateId" id="StateId">                                     
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="CityName">City Name</label>
+                                    <input id="CityName" type="text" class="form-control" name="CityName" value="@Model.CityName" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <button type="submit" class="btn btn-primary btn-block" style="width: fit-content;">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
+            @* <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> *@
+            <script>
+                $(document).ready(function () {
+                    if ($("#hdnTempData").val() != null && $("#hdnTempData").val() != '') {
+                        toastr.success("Record Added", "Successfully Added");
+                    }
+                    if ($("#hiddenTempData").val() != null && $("#hiddenTempData").val() != '') {
+                        toastr.success("Record Updated", "Successfully Updated");
+                    }
+                    if ($("#hdncountryId").val() != null && $("#hdncountryId").val() != '') {
+                        GetStatesByCountryId($("#hdncountryId").val());
+
+                    }
+                });
+
+
+
+                
+
+                // $("#CountryId").change(function () {
+
+                //     var end = this.value;
+                //     alert(end);
+                // });
+
+                // $('#CountryId').change(function () {
+                //     debugger;
+                //     var optionSelected = $(this).find("option:selected");
+                //     var valueSelected = optionSelected.val();
+                //     var textSelected = optionSelected.text();
+                //     alert(valueSelected);
+
+                //     $.ajax({
+                //         url: '/Address/GetStates', // Replace with your actual controller and action method
+                //         type: 'GET',
+                //         data: { countryId: selectedCountryId },
+                //         success: function (data) {
+                //             // Update the state select options
+                //             $('#stateSelect').empty(); // Clear existing options
+                //             $.each(data, function (index, state) {
+                //                 $('#stateSelect').append($('<option>', {
+                //                     value: state.Id,
+                //                     text: state.Name
+                //                 }));
+                //             });
+                //         }
+                // });
+                $('#CountryId').on('change', function () {
+                    var selectedCountryId = $(this).val(); // Get the selected country value
+                    GetStatesByCountryId(selectedCountryId);
+
+                    // Perform an AJAX request to get states based on the selected country
+                   
+                });
+
+                function GetStatesByCountryId(selectedCountryId) {
+                    $.ajax({
+                        url: '/Address/GetStatesByCountryId', // Replace with your actual controller and action method
+                        type: 'GET',
+                        data: { countryId: selectedCountryId },
+                        success: function (data) {
+                            debugger
+                            // Update the state select options
+                            $('#StateId').empty(); // Clear existing options
+                            $.each(data, function (index, state) {
+                                debugger;
+
+                                $('#StateId').append($('<option>', {
+                                    value: state.id,
+                                    text: state.stateName
+                                }));
+                            });
+                            if ($("#hdnStateId").val() != null) {
+                                $('#StateId').val($("#hdnStateId").val());
+                            }
+                        },
+                        error: function (error) {
+                            console.error('Error fetching states: ' + error);
+                        }
+                    });
+                }
+                
+
+                
+                
+            </script>
+
+
+
+        </div>
+    </div>
+</section>
