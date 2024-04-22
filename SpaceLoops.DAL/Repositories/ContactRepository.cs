@@ -60,7 +60,7 @@ namespace SpaceLoops.DAL.Repositories
         {
             try
             {
-                var obj = _spaceloopsDbContext.Contacts.Where(x => x.IsDeleted == false).ToList();
+                var obj = _spaceloopsDbContext.Contacts.Where(x => x.IsDeleted != false).ToList();
                 if (obj != null) return obj;
                 else return null;
             }

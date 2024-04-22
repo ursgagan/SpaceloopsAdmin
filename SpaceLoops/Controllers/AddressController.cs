@@ -20,6 +20,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Image = SpaceLoops.DAL.Entities.Image;
 using Microsoft.AspNetCore.Hosting.Server;
 using NUglify.JavaScript.Syntax;
+using SpaceLoops.DAL.Model;
 
 
 namespace SpaceLoops.Controllers
@@ -46,6 +47,10 @@ namespace SpaceLoops.Controllers
         {
             return View();
         }
+
+
+        #region Country
+
         public IActionResult AddCountry(string countryId)
         {
             Country country = new Country();
@@ -91,7 +96,9 @@ namespace SpaceLoops.Controllers
             TempData["DeleteMessage"] = "Country Deleted Successfully";
             return RedirectToAction("CountryList", "Address");
         }
+        #endregion
 
+        #region  State
         public IActionResult AddState(string stateId)
         {
             State state = new State();
@@ -104,14 +111,6 @@ namespace SpaceLoops.Controllers
             ViewBag.CountryList = _addressServices.GetAllCountries();
             return View(state);
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> AddState(State state) 
-        //{
-        //    await _stateServices.AddState(state);
-        //    ViewBag.CountryList = _addressServices.GetAllCountries();
-        //    return View();
-        //}
 
         [HttpPost]
         public async Task<IActionResult> AddState(State state)
@@ -160,6 +159,17 @@ namespace SpaceLoops.Controllers
             TempData["SuccessMessage"] = "State Edited Successfully";
             return RedirectToAction("StateList", "Address");
         }
+
+        [HttpGet]
+        public IActionResult GetStatesByCountryId(Guid countryId)
+        {
+            var states = _stateServices.GetStatesByCountryId(countryId);
+            return Json(states); // Assuming you want to return JSON data
+        }
+
+        #endregion
+
+        #region city
 
         public IActionResult AddCity(string cityId)
         {
@@ -224,12 +234,15 @@ namespace SpaceLoops.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetStatesByCountryId(Guid countryId)
+        public IActionResult GetCitiesByStatesId(Guid stateId)
         {
-            var states = _stateServices.GetStatesByCountryId(countryId);
-            return Json(states); // Assuming you want to return JSON data
+            var cities = _userRegistrationServices.GetCitiesByStatesId(stateId);
+            return Json(cities); // Assuming you want to return JSON data
         }
 
+        #endregion
+
+        #region  User
 
         public IActionResult UserRegistration(string userId)
         {
@@ -312,12 +325,9 @@ namespace SpaceLoops.Controllers
             return RedirectToAction("UserList", "Address");
         }
 
-        [HttpGet]
-        public IActionResult GetCitiesByStatesId(Guid stateId)
-        {
-            var cities = _userRegistrationServices.GetCitiesByStatesId(stateId);
-            return Json(cities); // Assuming you want to return JSON data
-        }
+        #endregion
+
+        #region UserLogin
 
         public IActionResult UserLogin()
         {
@@ -424,6 +434,10 @@ namespace SpaceLoops.Controllers
             }
         }
 
+        #endregion
+
+        #region Password
+
         public IActionResult ResetPassword()
         {
             return View();
@@ -454,7 +468,6 @@ namespace SpaceLoops.Controllers
                     string emailBody = System.IO.File.ReadAllText(Path.Combine(folderPath, fileName));
 
                     emailBody = emailBody.Replace("[UserName]", firstName).Replace("[ForgotPasswordURL]", forgotPasswordURL); ;
-
 
 
                     using (var client = new SmtpClient("smtp.gmail.com"))
@@ -533,38 +546,6 @@ namespace SpaceLoops.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult ChangePassword(Guid UserId, string currentPassword, string newPassword, string confirmPassword)
-        //{
-        //    var user = _userRegistrationServices.GetUserById(UserId);
-
-        //    // Check if the user exists and if the current password matches
-        //    //if (user != null && PasswordHasher.VerifyHashedPassword(user.Password, currentPassword) == PasswordVerificationResult.Success)
-        //    //{
-        //    //    // Check if the new password and confirm new password match
-        //    //    if (newPassword == confirmPassword)
-        //    //    {
-        //    //        // Update the user's password
-        //    //        user.Password = PasswordHasher.HashPassword(newPassword);
-        //    //        _userRegistrationServices.UpdateUser(user);
-
-        //    //        TempData["PasswordChangeMessage"] = "Password changed successfully";
-        //    //        return Json(true);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        TempData["PasswordChangeMessage"] = "New password and confirm password do not match";
-        //    //        return Json(false);
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    TempData["PasswordChangeMessage"] = "Invalid current password";
-        //    //    return Json(false);
-        //    //}
-        //}
-
-
         public IActionResult CheckPassword()
         {
             return View();
@@ -606,6 +587,10 @@ namespace SpaceLoops.Controllers
             }
         }
 
+        #endregion
+
+        #region Image
+
         public IActionResult AddImage()
         {
             Image image = new Image();
@@ -626,6 +611,9 @@ namespace SpaceLoops.Controllers
             return View(image2);
         }
 
+        #endregion
+
+        #region User Profile
         public IActionResult EditProfile()
         {
             var user = GetLoggerUserData();
@@ -645,7 +633,7 @@ namespace SpaceLoops.Controllers
                     user.LastName = userRegistration.LastName;
                     user.PhoneNumber = userRegistration.PhoneNumber;
 
-                    _userRegistrationServices.UpdateUser(user);
+                   _userRegistrationServices.UpdateUser(user);
 
                     return Json(true);
                 }
@@ -673,7 +661,6 @@ namespace SpaceLoops.Controllers
                     // Convert byte array to base64 string
                     var base64String = Convert.ToBase64String(imageBytes);
 
-
                     image.ImageName = fileName;
                     image.ImageData = base64String;
                     image.CreatedOn = DateTime.Now;
@@ -692,9 +679,9 @@ namespace SpaceLoops.Controllers
 
                     var user = _userRegistrationServices.isUserExist(emailAddress);
 
-                    if (user.ImageId != null && user.ImageId != Guid.Empty)
+                    if (user.ImageId != null && (Guid)user.ImageId != Guid.Empty)
                     {
-                        image.Id = user.ImageId;
+                        image.Id = (Guid)user.ImageId;
                         var imageData = _imageServices.UpdateImage(image);
 
                         user.ImageId = image.Id;
@@ -733,13 +720,94 @@ namespace SpaceLoops.Controllers
 
                 if (user != null)
                 {
-                    var imageData = _imageServices.GetImageById(user.ImageId);
+                    if (user.ImageId != Guid.Empty && user.ImageId != null)
+                    {
+                        var imageData = _imageServices.GetImageById((Guid)user.ImageId);
 
-                    ViewBag.ImageData = imageData.ImageData;
+                        ViewBag.ImageData = imageData.ImageData;
+                    }
+                   
                     return user;
                 }
             }
             return user;
         }
+
+        public IActionResult GetUserData()
+        {
+            var getUserData = GetLoggedUser();
+         
+                return Json(getUserData);
+        }
+
+        private SpaceLoops.Models.UserModel GetLoggedUser()
+        {
+            SpaceLoops.Models.UserModel userModel = new SpaceLoops.Models.UserModel();
+            UserRegistration user = new UserRegistration();
+            var userClaims = ((ClaimsIdentity)User.Identity).Claims;
+
+            // Find the claim with the email address
+            var emailClaim = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.Email || c.Type == "email");
+
+            if (emailClaim != null)
+            {
+                var emailAddress = emailClaim.Value;
+
+                user = _userRegistrationServices.isUserExist(emailAddress);
+
+                if (user != null)
+                {
+                    if(user.ImageId != Guid.Empty && user.ImageId != null)
+                    {
+                        var imageData = _imageServices.GetImageById((Guid)user.ImageId);
+                        userModel.ImageId =  imageData.Id;
+                        userModel.ImageData = imageData.ImageData;
+                        userModel.ImageName = imageData.ImageName;
+
+                        ViewBag.ImageData = imageData.ImageData;
+                    }
+                    userModel.Id = user.Id;
+                    userModel.FirstName = user.FirstName;
+                    userModel.LastName = user.LastName;
+                    userModel.EmailId = user.EmailId;
+                    userModel.PhoneNumber = user.PhoneNumber;
+                    userModel.CityId = user.CityId;
+                    userModel.IsDeleted = user.IsDeleted;
+                    userModel.IsActive = user.IsActive;
+                    userModel.CreatedOn = user.CreatedOn;
+                    userModel.UpdatedOn = user.UpdatedOn;
+                    userModel.ResetCode = user.ResetCode;
+        
+                    userModel.Password = user.Password;
+
+                   
+                    return userModel;
+                }
+            }
+            return userModel;
+        }
+
+        #endregion
+
+        public IActionResult GetAllCount()
+        
+        
+        {
+          var getCountryCount = _addressServices.GetAllCountries().Count();
+            var getStateCount = _stateServices.GetStatesAll().Count();
+            var getCityCount = _cityServices.GetCitiesAll().Count();
+            var getUserCount = _userRegistrationServices.GetUserAll().Count();
+
+            var count = new
+            {
+                CountryCount = getCountryCount,
+                StateCount = getStateCount,
+                CityCount = getCityCount,
+                UserCount = getUserCount
+            };
+            return Json(count);
+        }
+
+
     }
 }

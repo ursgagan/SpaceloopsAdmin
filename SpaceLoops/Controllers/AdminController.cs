@@ -6,6 +6,7 @@ using SpaceLoops.DAL.Entity;
 
 namespace SpaceLoops.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly ContactServices _contactServices;

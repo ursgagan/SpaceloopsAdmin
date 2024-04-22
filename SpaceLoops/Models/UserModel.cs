@@ -1,16 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SpaceLoops.DAL.Entities
+﻿namespace SpaceLoops.Models
 {
-    public class UserRegistration
+    public class UserModel
     {
-        [Key]
         public Guid Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -24,7 +15,10 @@ namespace SpaceLoops.DAL.Entities
         public string? Password { get; set; }
         public string? ResetCode { get; set; }
 
-        public Guid? ImageId { get; set; }
+        public Guid ImageId { get; set; }
+
+        public string? ImageName { get; set; }
+        public string? ImageData { get; set; }
+        
     }
 }
-

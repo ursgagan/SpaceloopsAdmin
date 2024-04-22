@@ -14,14 +14,14 @@
                     </div>
                     <div class="card-body">
                         <form action="/Address/UserLogin" method="post">
-                           @*  <input id="Id" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus> *@
+                            @*  <input id="Id" class="form-control" name="Id" value="@Model.Id" type="hidden" autofocus> *@
                             <input type="hidden" id="hdnTempData" value="@TempData["SuccessMessage"]" />
                             <input type="hidden" id="hdnResetPwdData" value="@TempData["PasswordResetMessage"]" />
                             <input type="hidden" id="hdnIncorrectPwd" value="@TempData["PasswordIncorrectMessage"]" />
 
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label for="EmailId">EmailId</label>
+                                    <label for="EmailId">Email Id</label>
                                     <input id="EmailId" type="text" class="form-control" name="EmailId" required>
                                 </div>
                             </div>
@@ -34,37 +34,31 @@
 
                             <div class="form-group">
                                 <div class="card">
-                                    <div class="card-body text-center">
-                                        <button type="submit" class="btn btn-primary btn-block" style="width: fit-content;">
-                                            Login
-                                        </button>
+
+
+                                    <div class="card-body" style="text-align: left;">
+                                        <div class="row" style="display: inline-flex; align-items: center;">
+                                            <button type="submit" class="btn btn-primary btn-block" style="flex: 1;">
+                                                Login
+                                            </button>
+                                            <span style="margin-left: 10px;">
+                                                <!-- Adjust margin as needed -->
+                                                <a href="/Address/ResetPassword" class="cta-button"> Forgot Password? </a>
+                                            </span>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-
                             <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
                             <script src="~/admintemplate/modules/toastr/build/toastr.min.js"></script>
-                            <script>
-                                $(document).ready(function () {
+                            <script src="~/js/userlogin.js"></script>
 
-                                   
-                                    if ($("#hdnResetPwdData").val() != null && $("#hdnResetPwdData").val() != '') {
-                                        debugger;
-                                        toastr.success("Password Reset", "Password Reset Succcessfull");
-                                    }
-
-                                    if ($("#hdnIncorrectPwd").val() != null && $("#hdnIncorrectPwd").val() != '') {
-                                        debugger;
-                                        toastr.error("Password is Incorrect", "Login Failed");
-                                    }
-                                }
-                                );
-                            </script>
                         </form>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </section>

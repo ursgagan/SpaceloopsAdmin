@@ -65,20 +65,7 @@
             </div>
             <script src="~/admintemplate/js/jquery-3.6.4.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script>
-                $(document).ready(function () {
-                    if ($("#hdnTempData").val() != null && $("#hdnTempData").val() != '') {
-                        toastr.success("Record Added", "Successfully Added");
-                    }
-                });
-            </script>
-            <script>
-                $(document).ready(function () {
-                    if ($("#hiddenTempData").val() != null && $("#hiddenTempData").val() != '') {
-                        toastr.success("Record Updated", "Successfully Updated");
-                    }
-                });
-            </script>
+            <script src="~/js/addcountry.js"></script>
         </div>
     </div>
 </section>

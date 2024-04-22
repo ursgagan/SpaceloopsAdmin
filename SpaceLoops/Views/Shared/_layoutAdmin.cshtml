@@ -84,11 +84,14 @@
                     <li class="dropdown">
                         <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
                             <i class="ion ion-android-person d-lg-none"></i>
-                            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                            <div id="ProfileName"  class="d-sm-none d-lg-inline-block"></div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             <a href="profile.html" class="dropdown-item has-icon">
                                 <i class="ion ion-android-person"></i> Profile
+                            </a>
+                            <a href="/Address/ChangePassword" class="dropdown-item has-icon">
+                                <i class="ion ion-log-out"></i> Change Password
                             </a>
                             <a href="/Address/UserLogout" class="dropdown-item has-icon">
                                 <i class="ion ion-log-out"></i> Logout
@@ -100,21 +103,23 @@
             <div class="main-sidebar">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html">Stisla Lite</a>
+                        <a href="index.html">SpaceLoops</a>
                     </div>
                     <div class="sidebar-user">
                         <div class="sidebar-user-picture">
-                            <img alt="image" src="~/admintemplate/img/avatar/avatar-1.jpeg">
+                           @*  <img alt="image" src="~/admintemplate/img/avatar/avatar-1.jpeg"> *@
+                            <img id="ProfileImage" src="data:image/jpeg;base64,@(ViewBag.ImageData)" class="form-control" width="68px" height="54px" style="padding: inherit;" name="ProfileImage">
+                         
                         </div>
                         <div class="sidebar-user-details">
-                            <div class="user-name">Ujang Maman</div>
+                            <div id="PName" class="user-name"></div>
                             <div class="user-role">
                                 Administrator
                             </div>
                         </div>
                     </div>
                     <ul class="sidebar-menu">
-                        <li class="menu-header">Dashboard</li>
+                        <li class="menu-header active">Dashboard</li>
                         <li class="active">
                             <a href="/Admin/DashBoard"><i class="ion ion-speedometer"></i><span>Dashboard</span></a>
                         </li>
@@ -169,42 +174,56 @@
     <script src="~/admintemplate/modules/summernote/summernote-lite.js"></script>
 
     <script>
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                datasets: [{
-                    label: 'Statistics',
-                    data: [460, 458, 330, 502, 430, 610, 488],
-                    borderWidth: 2,
-                    backgroundColor: 'rgb(87,75,144)',
-                    borderColor: 'rgb(87,75,144)',
-                    borderWidth: 2.5,
-                    pointBackgroundColor: '#ffffff',
-                    pointRadius: 4
-                }]
-            },
-            options: {
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true,
-                            stepSize: 150
+
+
+        $(document).ready(function () {
+
+            var currentUrl = window.location.pathname;
+
+            // Loop through each anchor tag and compare its href attribute with the current URL
+            $("ul.sidebar-menu li").each(function () {
+                var link = $(this).find("a").attr("href");
+
+                // Check if the current URL matches the anchor tag's href attribute
+                if (currentUrl === link) {
+                    $(this).addClass("active"); // Add the "active" class to the corresponding <li> element
+                }
+            });
+
+
+            // Make an AJAX call to retrieve the user's profile data, including the image data
+            $.ajax({
+                url: '/Address/GetUserData', // Replace this with your actual endpoint to retrieve user profile data
+                type: 'GET',
+                success: function (response) {
+                    debugger;
+                    if (response)
+                    {
+                        if (response.imageData != null) {
+                        $('#ProfileImage').attr('src', 'data:image/jpeg;base64,' + response.imageData);
                         }
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            display: false
+                        else {                         
+                            $('#ProfileImage').attr('src', '/admintemplate/img/NoProfileImage.jpg');
+
                         }
-                    }]
+                        $('#ProfileName').text(response.firstName + ' ' + response.lastName);
+
+                        $('#PName').text(response.firstName + ' ' + response.lastName);
+                     }
+                    // Assuming response contains the user's profile data including the image data
+                    // var profileImageData = response.DisplayedImage;
+
+                    // // Set the src attribute of the img tag with the retrieved profile image data
+                    // $('#profileImage').attr('src', 'data:image/jpeg;base64,' + profileImageData);
                 },
-            }
+                // error: function (xhr, status, error) {
+                //     console.error('Error retrieving user profile data:', error);
+                // }
+            });
         });
 
+
+     
     </script>
     <script src="~/admintemplate/modules/toastr/build/toastr.min.js"></script>
     <script src="~/admintemplate/js/scripts.js"></script>
